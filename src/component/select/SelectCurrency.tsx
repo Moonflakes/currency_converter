@@ -37,8 +37,8 @@ export const SelectCurrency = ({
         value={value}
         onChange={(e) => handleCurrencyChange(e, setCurrency)}
       >
-        {options.map((option) => (
-          <option value={option.value}>{option.label}</option>
+        {options.map((option, index) => (
+          <option value={option.value} key={`option${index}`}>{option.label}</option>
         ))}
       </select>
     </label>
