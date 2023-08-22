@@ -89,4 +89,7 @@ select {
   .amount {
     width: 94%;
   }
+  .result, .currency {
+    font-size: xx-large;
+  }
 }
