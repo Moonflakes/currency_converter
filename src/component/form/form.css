@@ -68,6 +68,7 @@ select {
 
 .convert {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   justify-content: flex-end;
   gap: 10px;
