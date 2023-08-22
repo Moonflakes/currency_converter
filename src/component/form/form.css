@@ -31,7 +31,7 @@ select {
 }
 
 .amount {
-  width: 78%;
+  width: 81%;
   border: 1px solid #858585;
 }
 
@@ -87,7 +87,7 @@ select {
     width: 100%;
   }
   .amount {
-    width: 94%;
+    width: 91%;
   }
   .result, .currency {
     font-size: xx-large;
