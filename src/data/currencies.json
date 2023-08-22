@@ -1,0 +1,17 @@
+[
+  {
+    "label": "Devise 1",
+    "value": "0",
+    "rates": [1, 0.67, 1.12]
+  },
+  {
+    "label": "Devise 2",
+    "value": "1",
+    "rates": [0.28, 1, 0.12]
+  },
+  {
+    "label": "Devise 3",
+    "value": "2",
+    "rates": [0.9, 0.34, 1]
+  }
+]

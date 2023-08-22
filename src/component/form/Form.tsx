@@ -1,59 +1,13 @@
-import { ComponentProps, useState } from "react";
-
-type Currency = {
-  label: string;
-  value: string;
-  rates: number[];
-};
-
-interface Select extends ComponentProps<"select"> {
-  label: string;
-  options: Currency[];
-}
-
-const currency1 = {
-  label: "Devise 1",
-  value: "0",
-  rates: [1, 0.67, 1.12],
-};
-const currency2 = {
-  label: "Devise 2",
-  value: "1",
-  rates: [0.28, 1, 0.12],
-};
-const currency3 = {
-  label: "Devise 3",
-  value: "2",
-  rates: [0.9, 0.34, 1],
-};
+import { useState } from "react";
+import currencies from "../../data/currencies.json";
+import { SelectCurrency } from "../select/SelectCurrency";
 
 export const Form = () => {
-  const [fromCurrency, setFromCurrency] = useState(currency1);
-  const [toCurrency, setToCurrency] = useState(currency2);
+  const [fromCurrency, setFromCurrency] = useState(currencies[0]);
+  const [toCurrency, setToCurrency] = useState(currencies[1]);
   const [amount, setAmount] = useState(0);
   const [result, setResult] = useState(0);
-  const currencies = [currency1, currency2, currency3];
   const currentRate = fromCurrency.rates[parseInt(toCurrency.value)];
-
-  const handleFromCurrencyChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    event.preventDefault();
-    const currentFromCurrency = currencies.filter(
-      (currency) => currency.value === event.target.value
-    );
-    setFromCurrency(currentFromCurrency[0]);
-  };
-
-  const handleToCurrencyChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    event.preventDefault();
-    const currentToCurrency = currencies.filter(
-      (currency) => currency.value === event.target.value
-    );
-    setToCurrency(currentToCurrency[0]);
-  };
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -80,17 +34,17 @@ export const Form = () => {
             required
           />
         </label>
-        <Select
+        <SelectCurrency
           label="De"
           options={currencies}
           value={fromCurrency.value}
-          onChange={handleFromCurrencyChange}
+          setCurrency={setFromCurrency}
         />
-        <Select
+        <SelectCurrency
           label="Vers"
           options={currencies}
           value={toCurrency.value}
-          onChange={handleToCurrencyChange}
+          setCurrency={setToCurrency}
         />
         <input type="submit" value="Convertir" />
       </form>
@@ -101,18 +55,5 @@ export const Form = () => {
         1 {fromCurrency.label} = {currentRate} {toCurrency.label}
       </p>
     </>
-  );
-};
-
-const Select = ({ label, value, options, onChange }: Select) => {
-  return (
-    <label>
-      {label}
-      <select value={value} onChange={onChange}>
-        {options.map((option) => (
-          <option value={option.value}>{option.label}</option>
-        ))}
-      </select>
-    </label>
   );
 };
