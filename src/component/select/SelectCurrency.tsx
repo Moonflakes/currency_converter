@@ -2,7 +2,8 @@ import { ComponentProps } from "react";
 import currencies from "../../data/currencies.json";
 
 type Currency = {
-  label: string;
+  name: string;
+  short: string;
   value: string;
   rates: number[];
 };
@@ -38,7 +39,9 @@ export const SelectCurrency = ({
         onChange={(e) => handleCurrencyChange(e, setCurrency)}
       >
         {options.map((option, index) => (
-          <option value={option.value} key={`option${index}`}>{option.label}</option>
+          <option value={option.value} key={`option${index}`}>
+            {`${option.short} - ${option.name}`}
+          </option>
         ))}
       </select>
     </label>

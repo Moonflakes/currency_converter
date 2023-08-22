@@ -1,6 +1,7 @@
 import { useState } from "react";
 import currencies from "../../data/currencies.json";
 import { SelectCurrency } from "../select/SelectCurrency";
+import "./form.css";
 
 export const Form = () => {
   const [fromCurrency, setFromCurrency] = useState(currencies[0]);
@@ -23,36 +24,41 @@ export const Form = () => {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <label>
-          Montant :
-          <input
-            name="amount"
-            type="number"
-            step="any"
-            placeholder="Montant"
-            onChange={handleAmountChange}
-            required
+        <div className="inputs">
+          <label>
+            Montant
+            <input
+              className="amount"
+              name="amount"
+              type="number"
+              step="any"
+              placeholder="Montant"
+              onChange={handleAmountChange}
+              required
+            />
+          </label>
+          <SelectCurrency
+            label="De"
+            options={currencies}
+            value={fromCurrency.value}
+            setCurrency={setFromCurrency}
           />
-        </label>
-        <SelectCurrency
-          label="De"
-          options={currencies}
-          value={fromCurrency.value}
-          setCurrency={setFromCurrency}
-        />
-        <SelectCurrency
-          label="Vers"
-          options={currencies}
-          value={toCurrency.value}
-          setCurrency={setToCurrency}
-        />
-        <input type="submit" value="Convertir" />
+          <SelectCurrency
+            label="Vers"
+            options={currencies}
+            value={toCurrency.value}
+            setCurrency={setToCurrency}
+          />
+        </div>
+        <input type="submit" value="Convertir" className="button" />
       </form>
-      <p>
-        {amount} {fromCurrency.label} = {result} {toCurrency.label}
+      <p className="convert">
+        {amount} {fromCurrency.short} <span>=</span>{" "}
+        <span className="result">{result}</span>{" "}
+        <span className="currency">{toCurrency.short}</span>
       </p>
-      <p>
-        1 {fromCurrency.label} = {currentRate} {toCurrency.label}
+      <p className="rate">
+        1 {fromCurrency.short} = {currentRate} {toCurrency.short}
       </p>
     </>
   );

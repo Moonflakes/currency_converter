@@ -5,9 +5,9 @@ function App() {
   return (
     <>
       <h1>Convertisseur de devises</h1>
-      <div className="card">
+      {/* <div className="card"> */}
         <Form/>
-      </div>
+      {/* </div> */}
     </>
   )
 }
