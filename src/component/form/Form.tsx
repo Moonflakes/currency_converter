@@ -2,6 +2,7 @@ import { useState } from "react";
 import currencies from "../../data/currencies.json";
 import { SelectCurrency } from "../select/SelectCurrency";
 import "./form.css";
+import { NumberInput } from "../input/NumberInput";
 
 export const Form = () => {
   const [fromCurrency, setFromCurrency] = useState(currencies[0]);
@@ -9,11 +10,6 @@ export const Form = () => {
   const [amount, setAmount] = useState(0);
   const [result, setResult] = useState(0);
   const currentRate = fromCurrency.rates[parseInt(toCurrency.value)];
-
-  const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    setAmount(parseFloat(event.target.value));
-  };
 
   const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -25,18 +21,7 @@ export const Form = () => {
     <>
       <form onSubmit={handleSubmit}>
         <div className="inputs">
-          <label>
-            Montant
-            <input
-              className="amount"
-              name="amount"
-              type="number"
-              step="any"
-              placeholder="Montant"
-              onChange={handleAmountChange}
-              required
-            />
-          </label>
+          <NumberInput name="amount" label="Montant" setValue={setAmount} />
           <SelectCurrency
             label="De"
             options={currencies}

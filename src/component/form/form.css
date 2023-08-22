@@ -30,11 +30,6 @@ select {
   width: 100%;
 }
 
-.amount {
-  width: calc(100% - 33px);
-  border: 1px solid #858585;
-}
-
 .button {
   border-radius: 8px;
   border: 1px solid transparent;

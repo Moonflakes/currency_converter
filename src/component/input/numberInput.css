@@ -1,0 +1,4 @@
+.input-number {
+  width: calc(100% - 33px);
+  border: 1px solid #858585;
+}
