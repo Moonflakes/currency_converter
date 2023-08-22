@@ -1,6 +1,6 @@
 import { useState } from "react";
 import currencies from "../../data/currencies.json";
-import { SelectCurrency } from "../select/SelectCurrency";
+import { Currency, SelectCurrency } from "../select/SelectCurrency";
 import "./form.css";
 import { NumberInput } from "../input/NumberInput";
 
@@ -37,6 +37,34 @@ export const Form = () => {
         </div>
         <input type="submit" value="Convertir" className="button" />
       </form>
+      <Result
+        amount={amount}
+        fromCurrency={fromCurrency}
+        result={result}
+        toCurrency={toCurrency}
+        currentRate={currentRate}
+      />
+    </>
+  );
+};
+
+type Result = {
+  amount: number;
+  fromCurrency: Currency;
+  toCurrency: Currency;
+  result: number;
+  currentRate: number;
+};
+
+const Result = ({
+  amount,
+  fromCurrency,
+  result,
+  toCurrency,
+  currentRate,
+}: Result) => {
+  return (
+    <>
       <p className="convert">
         {amount} {fromCurrency.short} <span>=</span>{" "}
         <span className="result">{result}</span>{" "}

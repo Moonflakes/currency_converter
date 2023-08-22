@@ -1,15 +1,13 @@
-import './App.css'
-import { Form } from './component/form/Form'
+import "./App.css";
+import { Form } from "./component/form/Form";
 
 function App() {
   return (
     <>
       <h1>Convertisseur de devises</h1>
-      {/* <div className="card"> */}
-        <Form/>
-      {/* </div> */}
+      <Form />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

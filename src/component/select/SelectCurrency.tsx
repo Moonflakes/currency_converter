@@ -1,7 +1,7 @@
 import { ComponentProps } from "react";
 import currencies from "../../data/currencies.json";
 
-type Currency = {
+export type Currency = {
   name: string;
   short: string;
   value: string;
