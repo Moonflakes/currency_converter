@@ -1,11 +1,13 @@
 import { ComponentProps } from "react";
-import currencies from "../../data/currencies.json";
 
 export type Currency = {
+  code: string;
+  decimal_digits: number;
   name: string;
-  short: string;
-  value: string;
-  rates: number[];
+  name_plural: string;
+  rounding: number;
+  symbol: string;
+  symbol_native: string;
 };
 
 interface Select extends ComponentProps<"select"> {
@@ -25,8 +27,8 @@ export const SelectCurrency = ({
     setCurrency: (value: React.SetStateAction<Currency>) => void
   ) => {
     event.preventDefault();
-    const currentCurrency = currencies.filter(
-      (currency) => currency.value === event.target.value
+    const currentCurrency = options.filter(
+      (currency) => currency.code === event.target.value
     );
     setCurrency(currentCurrency[0]);
   };
@@ -39,8 +41,8 @@ export const SelectCurrency = ({
         onChange={(e) => handleCurrencyChange(e, setCurrency)}
       >
         {options.map((option, index) => (
-          <option value={option.value} key={`option${index}`}>
-            {`${option.short} - ${option.name}`}
+          <option value={option.code} key={`option${index}`}>
+            {`${option.code} - ${option.name}`}
           </option>
         ))}
       </select>

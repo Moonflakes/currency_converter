@@ -2,7 +2,15 @@
 
 Install packages : `npm install`
 
-Run application : `npm run dev`
+## Create API account
+
+Create your account on https://freecurrencyapi.com/
+
+Create `.env` file at the root and add your api key like this : `VITE_API_KEY="copy and past the Default Key of your Dashboard here"`
+
+## Run application
+
+`npm run dev`
 
 
 ## Instructions :

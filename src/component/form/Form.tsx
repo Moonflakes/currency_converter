@@ -1,21 +1,64 @@
-import { useState } from "react";
-import currencies from "../../data/currencies.json";
+import { FormEvent, useEffect, useState } from "react";
 import { Currency, SelectCurrency } from "../select/SelectCurrency";
 import "./form.css";
 import { NumberInput } from "../input/NumberInput";
+const apiKey = import.meta.env.VITE_API_KEY;
 
 export const Form = () => {
-  const [fromCurrency, setFromCurrency] = useState(currencies[0]);
-  const [toCurrency, setToCurrency] = useState(currencies[1]);
+  const [currencies, setCurrencies] = useState([]);
+  const [fromCurrency, setFromCurrency] = useState<Currency>({} as Currency);
+  const [toCurrency, setToCurrency] = useState<Currency>({} as Currency);
   const [amount, setAmount] = useState(0);
   const [result, setResult] = useState(0);
-  const currentRate = fromCurrency.rates[parseInt(toCurrency.value)];
+  const [currentRate, setCurrentRate] = useState(0);
 
-  const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const fetchRate = async () => {
+    const response = await fetch(
+      `https://api.freecurrencyapi.com/v1/latest?apikey=${apiKey}&base_currency=${fromCurrency.code}&currencies=${toCurrency.code}`
+    );
+    const data = await response.json();
+    setCurrentRate(data.data[toCurrency.code]);
+  };
+
+  const fetchAllCurrencies = (abortController: AbortController) => {
+    fetch(
+      `https://api.freecurrencyapi.com/v1/currencies?apikey=${apiKey}&currencies`,
+      { signal: abortController.signal }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        //init data
+        setFromCurrency(data.data["EUR"]);
+        setToCurrency(data.data["USD"]);
+        setCurrencies(Object.values(data.data));
+      })
+      .then(() => {});
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!fromCurrency && !toCurrency) return;
+
+    fetchRate();
     const currentResult = amount * currentRate;
     setResult(currentResult);
   };
+
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    fetchAllCurrencies(abortController);
+    return () => {
+      abortController.abort();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (toCurrency.code && fromCurrency.code) fetchRate();
+    return () => {};
+  }, [toCurrency, fromCurrency]);
 
   return (
     <>
@@ -25,13 +68,13 @@ export const Form = () => {
           <SelectCurrency
             label="De"
             options={currencies}
-            value={fromCurrency.value}
+            value={fromCurrency.code}
             setCurrency={setFromCurrency}
           />
           <SelectCurrency
             label="Vers"
             options={currencies}
-            value={toCurrency.value}
+            value={toCurrency.code}
             setCurrency={setToCurrency}
           />
         </div>
@@ -66,12 +109,13 @@ const Result = ({
   return (
     <>
       <p className="convert">
-        {amount} {fromCurrency.short} <span>=</span>{" "}
+        {amount} {fromCurrency.symbol_native} <span>=</span>{" "}
         <span className="result">{result}</span>{" "}
-        <span className="currency">{toCurrency.short}</span>
+        <span className="currency">{toCurrency.symbol_native}</span>
       </p>
       <p className="rate">
-        1 {fromCurrency.short} = {currentRate} {toCurrency.short}
+        1 {fromCurrency.symbol_native} = {currentRate}{" "}
+        {toCurrency.symbol_native}
       </p>
     </>
   );
