@@ -12,14 +12,6 @@ export const Form = () => {
   const [result, setResult] = useState(0);
   const [currentRate, setCurrentRate] = useState(0);
 
-  const fetchRate = async () => {
-    const response = await fetch(
-      `https://api.freecurrencyapi.com/v1/latest?apikey=${apiKey}&base_currency=${fromCurrency.code}&currencies=${toCurrency.code}`
-    );
-    const data = await response.json();
-    setCurrentRate(data.data[toCurrency.code]);
-  };
-
   const fetchAllCurrencies = (abortController: AbortController) => {
     fetch(
       `https://api.freecurrencyapi.com/v1/currencies?apikey=${apiKey}&currencies`,
@@ -29,7 +21,7 @@ export const Form = () => {
         return response.json();
       })
       .then((data) => {
-        //init data
+        //init values
         setFromCurrency(data.data["EUR"]);
         setToCurrency(data.data["USD"]);
         setCurrencies(Object.values(data.data));
@@ -37,15 +29,15 @@ export const Form = () => {
       .then(() => {});
   };
 
+  // set the result of the convertion
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!fromCurrency && !toCurrency) return;
-
-    fetchRate();
     const currentResult = amount * currentRate;
     setResult(currentResult);
   };
 
+  // get all currencies options to init select items
   useEffect(() => {
     const abortController = new AbortController();
 
@@ -55,7 +47,16 @@ export const Form = () => {
     };
   }, []);
 
+  // update exchange rate when currencies change
   useEffect(() => {
+    const fetchRate = async () => {
+      const response = await fetch(
+        `https://api.freecurrencyapi.com/v1/latest?apikey=${apiKey}&base_currency=${fromCurrency.code}&currencies=${toCurrency.code}`
+      );
+      const data = await response.json();
+      setCurrentRate(data.data[toCurrency.code]);
+    };
+
     if (toCurrency.code && fromCurrency.code) fetchRate();
     return () => {};
   }, [toCurrency, fromCurrency]);
